@@ -23,3 +23,11 @@ Need to do lots of things in Stripe, like canceling all subscriptions programmat
 This current version causes Stripe to insta-cancel and pro-rate refunds for subscriptions. Change the following line in `Controller.php` if you don't want this:
 
 `$subscriptionObject->delete(['invoice_now' => false, 'prorate' => false]);`
+
+### Q&A 
+
+- Why did you use PHP for this?
+I don't know! It was just what made sense to me.
+
+- Omg you made me delete all my subscriptions!
+Sorry. You should have tested this first. 
