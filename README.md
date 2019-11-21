@@ -4,7 +4,7 @@ Need to do lots of things in Stripe, like canceling all subscriptions programmat
 
 ![](https://i.imgur.com/suW5bj5.png)
 
-**Warning**: Do not use this on a live server! It's intended to be used locally to make your life easier. This app requires no authentication and your API key is hardcoded. ¯\_(ツ)_/¯ 
+**Warning**: Do not use this on a live server! It's intended to be used locally to make your life easier. This app requires no authentication and that would be a very bad thing. ¯\_(ツ)_/¯ 
 
 ### What it does
 1. Bulk Stripe cancellations (with optional proration)
