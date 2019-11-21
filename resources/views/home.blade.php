@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    This page does nothing right now! Hit customers in the header.
                 </div>
             </div>
         </div>
