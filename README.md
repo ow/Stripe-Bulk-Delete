@@ -2,6 +2,8 @@
 
 Need to do lots of things in Stripe, like canceling all subscriptions programmatically, and don't want to click each one in the dashboard? This is for you! This simple project makes it easy to bulk-cancel subscriptions and perform other mass actions that aren't possible with the Stripe API today.
 
+![](https://i.imgur.com/suW5bj5.png)
+
 **Warning**: Do not use this on a live server! It's intended to be used locally to make your life easier. This app requires no authentication and your API key is hardcoded. ¯\_(ツ)_/¯ 
 
 ### What it does
