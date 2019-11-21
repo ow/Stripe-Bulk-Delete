@@ -17,3 +17,7 @@ Need to do lots of things in Stripe, like canceling all subscriptions programmat
 4. Hit the URL of your server and browse to `/customers`
 5. Click delete (or don't) at your own risk
 
+## Useful bits
+This current version causes Stripe to insta-cancel and pro-rate refunds for subscriptions. Change the following line in `Controller.php` if you don't want this:
+
+`$subscriptionObject->delete(['invoice_now' => false, 'prorate' => false]);`
