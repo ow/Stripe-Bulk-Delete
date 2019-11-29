@@ -1,48 +1,64 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Console\Commands;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Http\Request;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Stripe\Stripe;
 use Stripe\Customer;
 use Stripe\Subscription;
 
-class Controller extends BaseController
+class StripeDelete extends Command
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    public $stripe;
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'stripe:delete';
 
-    public function __construct() {
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Mass delete Stripe subscriptions';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
         //Replace this with your own key
         $key = env('STRIPE_SECRET', 'null');
-        
+    
         if(is_null($key)) {
             throw new \Exception("You need to set a Stripe key in your env file.");
         }
 
         Stripe::setApiKey($key);
-
-    }
-    public function listAllCustomers(Request $request) {
-        $offset = $request->query('offset');
-        $customers = Customer::all(['limit' => 50, 'starting_after' => $offset]);
-
-        return view('customers')->with(['customers' => $customers, 'last' => last($customers->data), 'has_more' => $customers->has_more]);
     }
 
-    public function deleteAllSubscriptions(Request $request) {
+    
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
         $count = 0;
-        $customers = Customer::all(['limit' => 100]);
+        $customers = Customer::all(['limit' => 20]);
         $hasMore = $customers->has_more;
         $offset = null;
+        
         while($hasMore) {
-            $customers = Customer::all(['limit' => 100, 'starting_after' => $offset]);
+            $customers = Customer::all(['limit' => 20, 'starting_after' => $offset]);
             $count = $count + $this->deleteSubs($customers);
             $hasMore = $customers->has_more;
             $last = last($customers->data);
@@ -50,10 +66,6 @@ class Controller extends BaseController
                 $offset = $last->id;
             }
         }
-
-        Session::flash('status', "Deleted " . $count . " subscriptions.");
-
-        return redirect('/customers');
     }
 
     private function deleteSubs($customers) {
@@ -67,7 +79,9 @@ class Controller extends BaseController
                     $subscriptionObject->delete(['invoice_now' => true, 'prorate' => true]);
 
                     $i++;
+                    $this->info('Deleting ' . $subscription->id);
                 } catch(\Exception $e) {
+                    $this->error('Could not delete ' . $subscription->id . " " . $e->getMessage());
                     Log::error("Error deleting " . $subscription->id . " " . $e->getMessage());
 
                 }
