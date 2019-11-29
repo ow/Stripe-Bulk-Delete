@@ -2,7 +2,9 @@
 
 Need to do lots of things in Stripe, like canceling all subscriptions programmatically, and don't want to click each one in the dashboard? This is for you! This simple project makes it easy to bulk-cancel subscriptions and perform other mass actions that aren't possible with the Stripe API today.
 
-**Warning**: Do not use this on a live server! It's intended to be used locally to make your life easier. This app requires no authentication and your API key is hardcoded. ¯\_(ツ)_/¯ 
+![](https://i.imgur.com/suW5bj5.png)
+
+**Warning**: Do not use this on a live server! It's intended to be used locally to make your life easier. This app requires no authentication and that would be a very bad thing. ¯\_(ツ)_/¯ 
 
 ### What it does
 1. Bulk Stripe cancellations (with optional proration)
@@ -21,3 +23,11 @@ Need to do lots of things in Stripe, like canceling all subscriptions programmat
 This current version causes Stripe to insta-cancel and pro-rate refunds for subscriptions. Change the following line in `Controller.php` if you don't want this:
 
 `$subscriptionObject->delete(['invoice_now' => false, 'prorate' => false]);`
+
+### Q&A 
+
+- Why did you use PHP for this?
+I don't know! It was just what made sense to me.
+
+- Omg you made me delete all my subscriptions!
+Sorry. You should have tested this first. 
